@@ -1,0 +1,11 @@
+BNF Notation
+
+expr -> digit + expr'  (p1)
+    | digit - exp'     (p2)
+    | digit            (p3)
+
+expr' -> + digit expr' (p4)
+    | - digit expr'    (p5)
+    | &                (p6)
+
+digit -> 0 | .. | 9    (p7 .. p17)
