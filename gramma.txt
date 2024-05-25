@@ -1,11 +1,12 @@
 BNF Notation
 
-expr -> digit + expr'  (p1)
-    | digit - exp'     (p2)
-    | digit            (p3)
+expr -> digit expr'    (p1)
+expr' -> + digit { print '+' } expr'		(p2)
+       | - digit { print '-' } expr'    	(p3)
+       | &                			(p4)
 
-expr' -> + digit expr' (p4)
-    | - digit expr'    (p5)
-    | &                (p6)
+digit -> 0 | .. | 9 { print '0 | .. | 9' }	(p5 .. p15)
 
-digit -> 0 | .. | 9    (p7 .. p17)
+FIRST(expr) { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }
+FIRST(expr') { +, -, & }
+FIRST(digit) { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }

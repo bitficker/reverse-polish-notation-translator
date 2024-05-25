@@ -1,36 +1,30 @@
 module Main where
 
-digitFIRST :: [Char]
-digitFIRST = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ]
-
+import Data.Char
 
 expr :: String -> IO ()
-expr (lookahead : xs) = do
-    digit lookahead
+expr [] = print ""
+expr (x : xs) = do
+    digit x
     expr' xs
-expr [] = return () -- understand
-
 
 digit :: Char -> IO ()
-digit lookahead = if lookahead `elem` digitFIRST
-                     then print lookahead
-                     else error "syntax error"
+digit lookahead = if isDigit lookahead then print lookahead else error "syntax error"
 
 expr' :: String -> IO ()
-expr' (lookahead : xs) = do
-    case lookahead of
-         '+' -> do
-             digit (head xs)
-             print '+'
-             expr' (tail xs)
-         '-' -> do
-             digit (head xs)
-             print '-'
-             expr' (tail xs)
-         ' ' -> print " "
-         _ -> error "syntax error"
-
-expr' [] = return ()
+expr' [] = print ""
+expr' (x : xs) = do
+ case x of
+  '+' -> do
+   (digit . head) xs
+   print '+'
+   (expr' . tail) xs
+  '-' -> do
+   (digit . head) xs
+   print '-'
+   (expr' . tail) xs
+  ' ' -> print " "
+  _ -> error "syntax error"
 
 translate :: String -> IO ()
 translate = expr
